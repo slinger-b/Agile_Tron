@@ -6,7 +6,6 @@
 enum dir {HAUT, DROITE, BAS, GAUCHE, RIEN};
 
 void ajoute_avance(int pos[2], dir direct, int vit);
-//test 1, 2
 
 class Bike
 {
