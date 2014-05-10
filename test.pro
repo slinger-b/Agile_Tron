@@ -7,10 +7,10 @@ SOURCES = liste.cpp \
     node.cpp \
     game.cpp \
     bike.cpp \
-    mainwidget.cpp \
-    # testnode.cpp \
-    # testliste.cpp
-    testbike.cpp
+    mainwidget.cpp \ # testnode.cpp \
+# testliste.cpp \
+# testbike.cpp \
+    testgame.cpp
 
 # install
 # target.path = $$[QT_INSTALL_EXAMPLES]/qtestlib/tutorial1
