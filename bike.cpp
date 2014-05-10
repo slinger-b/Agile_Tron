@@ -125,7 +125,7 @@ void Bike::perduCollision()
     perdu=true;
 }
 
-void Bike::perd()
+void Bike::deletewall()
 {
     PosSuccessives->all_delete();
 }
@@ -153,60 +153,70 @@ void Bike::traverseMur()
     PosSuccessives->premier();
     PosSuccessives->getElem(pos);
     if (pos[0]<0)
-    {
-        int temp[2] = {pos[0]-50,pos[1]};
-        PosSuccessives->push(temp);
-        temp[1] = temp[1]-1000;
-        PosSuccessives->push(temp);
-        temp[0]=temp[0]+1000;
-        PosSuccessives->push(temp);
-        temp[1] = temp[1]+1000;
-        PosSuccessives->push(temp);
-        temp[0]=600;temp[1]=pos[1];
-        PosSuccessives->push(temp);
-    }
+        traverseMur_left(pos);
     else if (pos[0]>600)
-    {
-        int temp[2] = {pos[0]+50,pos[1]};
-        PosSuccessives->push(temp);
-        temp[1] = temp[1]-1000;
-        PosSuccessives->push(temp);
-        temp[0]=temp[0]-1000;
-        PosSuccessives->push(temp);
-        temp[1] = temp[1]+1000;
-        PosSuccessives->push(temp);
-        temp[0]=0;temp[1]=pos[1];
-        PosSuccessives->push(temp);
-    }
+        traverseMur_right(pos);
     else if (pos[1]>600)
-    {
-        int temp[2] = {pos[0],pos[1]+50};
-        PosSuccessives->push(temp);
-        temp[0] = temp[0]-1000;
-        PosSuccessives->push(temp);
-        temp[1]=temp[1]-1000;
-        PosSuccessives->push(temp);
-        temp[0] = temp[0]+1000;
-
-
-        PosSuccessives->push(temp);
-        temp[1]=0;temp[0]=pos[0];
-        PosSuccessives->push(temp);
-    }
+        traverseMur_down(pos);
     else if (pos[1]<0)
-    {
-        int temp[2] = {pos[0],pos[1]-50};
-        PosSuccessives->push(temp);
-        temp[0] = temp[0]+1000;
-        PosSuccessives->push(temp);
-        temp[1]=temp[1]+1000;
-        PosSuccessives->push(temp);
-        temp[0] = temp[0]-1000;
-        PosSuccessives->push(temp);
-        temp[0]=pos[0];temp[1]=600;
-        PosSuccessives->push(temp);
-    }
+        traverseMur_up(pos);
 
+}
+
+void Bike::traverseMur_left(int pos[2])
+{
+    int temp[2] = {pos[0]-50,pos[1]};
+    PosSuccessives->push(temp);
+    temp[1] = temp[1]-1000;
+    PosSuccessives->push(temp);
+    temp[0]=temp[0]+1000;
+    PosSuccessives->push(temp);
+    temp[1] = temp[1]+1000;
+    PosSuccessives->push(temp);
+    temp[0]=600;temp[1]=pos[1];
+    PosSuccessives->push(temp);
+}
+
+void Bike::traverseMur_right(int pos[2])
+{
+    int temp[2] = {pos[0]+50,pos[1]};
+    PosSuccessives->push(temp);
+    temp[1] = temp[1]-1000;
+    PosSuccessives->push(temp);
+    temp[0]=temp[0]-1000;
+    PosSuccessives->push(temp);
+    temp[1] = temp[1]+1000;
+    PosSuccessives->push(temp);
+    temp[0]=0;temp[1]=pos[1];
+    PosSuccessives->push(temp);
+}
+
+void Bike::traverseMur_up(int pos[2])
+{
+    int temp[2] = {pos[0],pos[1]-50};
+    PosSuccessives->push(temp);
+    temp[0] = temp[0]+1000;
+    PosSuccessives->push(temp);
+    temp[1]=temp[1]+1000;
+    PosSuccessives->push(temp);
+    temp[0] = temp[0]-1000;
+    PosSuccessives->push(temp);
+    temp[0]=pos[0];temp[1]=600;
+    PosSuccessives->push(temp);
+}
+
+void Bike::traverseMur_down(int pos[2])
+{
+    int temp[2] = {pos[0],pos[1]+50};
+    PosSuccessives->push(temp);
+    temp[0] = temp[0]-1000;
+    PosSuccessives->push(temp);
+    temp[1]=temp[1]-1000;
+    PosSuccessives->push(temp);
+    temp[0] = temp[0]+1000;
+    PosSuccessives->push(temp);
+    temp[1]=0;temp[0]=pos[0];
+    PosSuccessives->push(temp);
 }
 
 int Bike::get_vitesse()const
@@ -232,6 +242,8 @@ dir Bike::get_invers_dir()const
         return HAUT;
     else if (direction == DROITE)
         return GAUCHE;
-    else
+    else if (direction == GAUCHE)
         return DROITE;
+    else
+        return RIEN;
 }

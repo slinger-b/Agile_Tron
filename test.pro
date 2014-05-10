@@ -5,11 +5,18 @@ QT += widgets \
     testlib
 SOURCES = liste.cpp \
     node.cpp \
-    testnode.cpp \
-    testliste.cpp
+    game.cpp \
+    bike.cpp \
+    mainwidget.cpp \
+    # testnode.cpp \
+    # testliste.cpp
+    testbike.cpp
 
 # install
 # target.path = $$[QT_INSTALL_EXAMPLES]/qtestlib/tutorial1
 # INSTALLS += target
 HEADERS += liste.h \
-    node.h
+    node.h \
+    game.h \
+    bike.h \
+    mainwidget.h
