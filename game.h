@@ -17,6 +17,11 @@ public:
     dir getDir(int i) const {return motos[i].get_dir();}
     int getMotoGagnante()const {return motogagnante;}
 
+    void bike_loose();
+    void bike_collision();
+    void bike_move();
+    void bike_turn(dir keyPress[4]);
+    int bike_surviving();
 
 private:
     //Verification de collision (3 fcts)

@@ -3,32 +3,29 @@
 Game::Game(int choixNbrJoueurs, bool bonus)
 {
     nbrJoueurs = choixNbrJoueurs;
+    vitDepart = 3;
+    motogagnante=0;
+    traverseMur = bonus;
 
+    //Player 1
+    dirDepart[0] = BAS;
     posDepart[0][0]=300;
     posDepart[0][1]=301;
+    //Player 2
+    dirDepart[1] = HAUT;
     posDepart[1][0]=300;
     posDepart[1][1]=299;
+    //Player 3
+    dirDepart[2] = DROITE;
     posDepart[2][0]=301;
     posDepart[2][1]=300;
+    //Player 4
+    dirDepart[3] = GAUCHE;
     posDepart[3][0]=299;
     posDepart[3][1]=300;
 
-    dirDepart[0] = BAS;
-    dirDepart[1] = HAUT;
-    dirDepart[2] = DROITE;
-    dirDepart[3] = GAUCHE;
-
-    vitDepart = 3;
-
-    motogagnante=0;
-
     for (int i=0;i<nbrJoueurs;++i)
-    {
         motos.push_back(Bike(posDepart[i],vitDepart,dirDepart[i]));
-    }
-
-    traverseMur = bonus;
-
 }
 
 Liste* Game::getMurMoto(int i)const
@@ -41,58 +38,57 @@ int Game::getNbrJoueurs()const
     return nbrJoueurs;
 }
 
-bool Game::suiteGame(dir keyPress[4])
+void Game::bike_turn(dir keyPress[4])
 {
-    //verifie_tournant
     for (int i=0; i<nbrJoueurs; ++i)
-    {
         if (keyPress[i]!=RIEN)
         {
             motos[i].chgDir(keyPress[i]);
             keyPress[i]=RIEN;
         }
-    }
+}
 
-    //fait avancer toutes les motos
+void Game::bike_collision()
+{
+    for (int i=0;i<nbrJoueurs;++i)
+        for (int j=0;j<nbrJoueurs;++j)
+            if(Game::collision(motos[i],motos[j]))
+                motos[i].perduCollision();
+}
+
+void Game::bike_loose()
+{
+    for (int i = 0; i<nbrJoueurs; ++i)
+        if (motos[i].getPerdu())
+            motos[i].deletewall();
+}
+
+void Game::bike_move()
+{
     for (int i=0; i<nbrJoueurs;++i)
         motos[i].avance();
+}
 
-    //verifie_si_collision (et appelle les fonctions de perte si necessaire)
-    for (int i=0;i<nbrJoueurs;++i)
-    {
-        for (int j=0;j<nbrJoueurs;++j)
-        {
-            if(Game::collision(motos[i],motos[j]))
-            {
-                motos[i].perduCollision();
-            }
-        }
-    }
-
-    //fonction qui détruit les murs des motos qui ont perdues
-    for (int i = 0; i<nbrJoueurs; ++i)
-    {
-        if (motos[i].getPerdu())
-        {
-            motos[i].perd();
-        }
-    }
-
-    //regarde combien de motos il reste
+int Game::bike_surviving()
+{
     int nbrMotosRestantes = 0;
     for (int i= 0; i<nbrJoueurs;++i)
         if (!motos[i].getPerdu())
             nbrMotosRestantes++;
+    return nbrMotosRestantes;
+}
+
+bool Game::suiteGame(dir keyPress[4])
+{
+    bike_turn(keyPress);
+    bike_move();
+    bike_collision();
+    bike_loose();
+
+    int nbrMotosRestantes = bike_surviving();
+
     if (nbrMotosRestantes<2)
     {
-        motogagnante = 0;
-        for (int i=0; i<nbrJoueurs; ++i)
-            if (!motos[i].getPerdu())
-            {
-                motos[i].gagne();
-                motos[i].perd(); //sert à détruire les murs
-                motogagnante=i+1;
-            }
         reinitialise();
         return false;
     }
@@ -101,10 +97,16 @@ bool Game::suiteGame(dir keyPress[4])
 
 void Game::reinitialise()
 {
+    motogagnante = 0;
+    for (int i=0; i<nbrJoueurs; ++i)
+        if (!motos[i].getPerdu())
+        {
+            motos[i].gagne();
+            motos[i].deletewall();
+            motogagnante=i+1;
+        }
     for(int i = 0; i<nbrJoueurs; ++i)
-    {
         motos[i].reinitialise();
-    }
 }
 
 //verifie quand une moto touche le mur d'une autre moto
