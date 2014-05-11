@@ -3,6 +3,9 @@
 
 #include <bike.h>
 
+const int STARTPOS = 300;
+const int STARTVELOCITY = 3;
+
 class Game
 {
 public:

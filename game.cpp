@@ -2,27 +2,31 @@
 
 Game::Game(int choixNbrJoueurs, bool bonus)
 {
-    nbrJoueurs = choixNbrJoueurs;
-    vitDepart = 3;
-    motogagnante=0;
+    if (choixNbrJoueurs >= 4)
+        nbrJoueurs = 4;
+    else
+        nbrJoueurs = choixNbrJoueurs;
+
+    vitDepart = STARTVELOCITY;
+    motogagnante = 0;
     traverseMur = bonus;
 
     //Player 1
     dirDepart[0] = BAS;
-    posDepart[0][0]=300;
-    posDepart[0][1]=301;
+    posDepart[0][0]=STARTPOS;
+    posDepart[0][1]=STARTPOS+1;
     //Player 2
     dirDepart[1] = HAUT;
-    posDepart[1][0]=300;
-    posDepart[1][1]=299;
+    posDepart[1][0]=STARTPOS;
+    posDepart[1][1]=STARTPOS-1;
     //Player 3
     dirDepart[2] = DROITE;
-    posDepart[2][0]=301;
-    posDepart[2][1]=300;
+    posDepart[2][0]=STARTPOS+1;
+    posDepart[2][1]=STARTPOS;
     //Player 4
     dirDepart[3] = GAUCHE;
-    posDepart[3][0]=299;
-    posDepart[3][1]=300;
+    posDepart[3][0]=STARTPOS-1;
+    posDepart[3][1]=STARTPOS;
 
     for (int i=0;i<nbrJoueurs;++i)
         motos.push_back(Bike(posDepart[i],vitDepart,dirDepart[i]));
@@ -99,18 +103,20 @@ void Game::reinitialise()
 {
     motogagnante = 0;
     for (int i=0; i<nbrJoueurs; ++i)
+    {
         if (!motos[i].getPerdu())
         {
             motos[i].gagne();
-            motos[i].deletewall();
             motogagnante=i+1;
         }
+        motos[i].deletewall();
+    }
     for(int i = 0; i<nbrJoueurs; ++i)
         motos[i].reinitialise();
 }
 
 //verifie quand une moto touche le mur d'une autre moto
-bool Game::collision(Bike &motoTest, Bike &motoMur)//ATTENTION, TEST EST DEVENU UN POINTEURS
+bool Game::collision(Bike &motoTest, Bike &motoMur)
 {
     //récupère les deux derniers points du mur pour le test
     bool perdu=false;
@@ -123,18 +129,14 @@ bool Game::collision(Bike &motoTest, Bike &motoMur)//ATTENTION, TEST EST DEVENU 
     pos2[0]=pos1[0];pos2[1]=pos1[1];
     ajoute_avance(pos2,dirTest,vit);
 
-    //recupere le debut du mur de la moto "mur"
     Liste* mur = motoMur.get_liste();
     int cur1[2], cur2[2];
     mur->premier();   //se met en début de liste
     mur->getElem(cur1);
 
-    //Si sort de l'écran
     if (traverseMur == false)
-    {
         if (pos1[0]>600 || pos1[0]<0 || pos1[1]>600 || pos1[1]<0)
             return true;
-    }
 
     if(mur->getNextElem(cur2) && pos1[0]==cur1[0] && pos1[1]==cur1[1] && motoTest.get_dir() == motoMur.get_dir())
     {
@@ -151,9 +153,7 @@ bool Game::collision(Bike &motoTest, Bike &motoMur)//ATTENTION, TEST EST DEVENU 
     }
 
     if (traverseMur == true)
-    {
         motoTest.traverseMur();
-    }
     return perdu;
 }
 
@@ -183,11 +183,8 @@ bool Game::verifPartielle(int pos1[2],int pos2[2],int cur1[2],int cur2[2])
 
         }
         else if (pos1[0] == pos2[0])
-        {
             if(entre(cur1[1],pos1[1],pos2[1]) && entre(pos1[0],cur1[0],cur2[0])) return true;
-        }
     }
-    //else il y a un problème : le serpent avance en diagonale
     return false;
 }
 
