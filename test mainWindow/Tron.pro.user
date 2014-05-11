@@ -6,11 +6,11 @@
  </data>
  <data>
   <variable>RunConfiguration0-ProFile</variable>
-  <value type="QString" >test.pro</value>
+  <value type="QString" >Tron.pro</value>
  </data>
  <data>
   <variable>RunConfiguration0-RunConfiguration.name</variable>
-  <value type="QString" >test</value>
+  <value type="QString" >Tron</value>
  </data>
  <data>
   <variable>RunConfiguration0-UseDyldImageSuffix</variable>
@@ -41,6 +41,7 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
    <value key="QtVersionId" type="int" >0</value>
+   <value key="addQDumper" type="" ></value>
   </valuemap>
  </data>
  <data>
@@ -48,6 +49,7 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
    <value key="QtVersionId" type="int" >0</value>
+   <value key="addQDumper" type="" ></value>
   </valuemap>
  </data>
  <data>
@@ -86,14 +88,14 @@
     <value type="QString" >WINDIR=C:\WINDOWS</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
-    <value type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test/test.pro</value>
+    <value type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/Tron.pro</value>
     <value type="QString" >-spec</value>
     <value type="QString" >win32-g++</value>
     <value type="QString" >-r</value>
    </valuelist>
    <value key="abstractProcess.command" type="QString" >C:/Qt/2009.02/qt/bin/qmake.exe</value>
    <value key="abstractProcess.enabled" type="bool" >false</value>
-   <value key="abstractProcess.workingDirectory" type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow</value>
    <value key="buildConfiguration" type="int" >2</value>
   </valuemap>
  </data>
@@ -137,7 +139,7 @@
    </valuelist>
    <value key="abstractProcess.command" type="QString" >C:/Qt/2009.02/mingw/bin/mingw32-make.exe</value>
    <value key="abstractProcess.enabled" type="bool" >true</value>
-   <value key="abstractProcess.workingDirectory" type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow</value>
   </valuemap>
  </data>
  <data>
