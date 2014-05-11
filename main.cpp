@@ -8,8 +8,6 @@
 //pointeurs et tableaux :
 //http://www.siteduzero.com/tutoriel-3-321485-tableaux-pointeurs-et-allocation-dynamique.html
 
-//test 2 :)
-
 int main(int argc, char *argv[])
 {
 
