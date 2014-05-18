@@ -2,8 +2,8 @@
 
 Game::Game(int choixNbrJoueurs, bool bonus)
 {
-    if (choixNbrJoueurs >= 4)
-        nbrJoueurs = 4;
+    if (choixNbrJoueurs >= MAXPLAYERS)
+        nbrJoueurs = MAXPLAYERS;
     else
         nbrJoueurs = choixNbrJoueurs;
 
@@ -28,27 +28,33 @@ Game::Game(int choixNbrJoueurs, bool bonus)
     posDepart[3][0]=STARTPOS-1;
     posDepart[3][1]=STARTPOS;
 
-    for (int i=0;i<nbrJoueurs;++i)
-        motos.push_back(Bike(posDepart[i],vitDepart,dirDepart[i]));
+    if (choixNbrJoueurs > 0)
+        for (int i=0;i<nbrJoueurs;++i)
+            motos.push_back(Bike(posDepart[i],vitDepart,dirDepart[i]));
 }
 
 // Main function of the class
 // return false if there is one bike left (so the game is finished)
 bool Game::suiteGame(dir keyPress[4])
 {
-    bike_turn(keyPress);
-    bike_move();
-    bike_collision();
-    bike_loose();
-
-    int nbrMotosRestantes = bike_surviving();
-
-    if (nbrMotosRestantes<2)
+    if (nbrJoueurs > 0)
     {
-        reinitialise();
-        return false;
+        bike_turn(keyPress);
+        bike_move();
+        bike_collision();
+        bike_loose();
+
+        int nbrMotosRestantes = bike_surviving();
+
+        if (nbrMotosRestantes<2)
+        {
+            reinitialise();
+            return false;
+        }
+        return true;
     }
-    return true;
+    else
+        return false;
 }
 
 void Game::bike_collision()
@@ -84,7 +90,7 @@ bool Game::collision(Bike &motoTest, Bike &motoMur)
 
     // If the bonus is inactive, the moto loose when touch the wall
     if (traverseMur == false)
-        if (pos1[0]>600 || pos1[0]<0 || pos1[1]>600 || pos1[1]<0)
+        if (pos1[0]>BORDERMAX || pos1[0]<BORDERMIN || pos1[1]>BORDERMAX || pos1[1]<BORDERMIN)
             return true;
 
     // Otherwise test if motoTest crossed/collided motoMur

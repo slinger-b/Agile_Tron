@@ -17,12 +17,15 @@ private slots:
     void start_position();
     void pos1D_between_borders();
     void pos2D_between_borders();
+    void test_reinit();
+    void test_reinit_player_0();
 
 private:
     Game* testgame;
     int player, pos1[2], pos2[2], pos3[2], pos4[2];
     int a, b, c;
     bool bonus;
+    dir keypressed[4];
 };
 
 void TestGame::creation_game()
@@ -132,7 +135,33 @@ void TestGame::pos2D_between_borders()
     delete testgame;
 }
 
-//verify collision : to do
+void TestGame::test_reinit()
+{
+    for (player = 1;player<=4;player++)
+    {
+        Game* testgame = new Game(player,false);
+        if (player > 0)
+        {
+            testgame->bike_move();
+            testgame->reinitialise();
+            testgame->getMurMoto(0)->top(pos1);
+            QVERIFY(pos1[0]==STARTPOS);
+            QVERIFY(pos1[1]==STARTPOS+1);
+        }
+        QVERIFY(player==testgame->getMotoGagnante());
+        delete testgame;
+    }
+}
+
+void TestGame::test_reinit_player_0()
+{
+    player = 0;
+    keypressed[0] = RIEN; keypressed[1] = RIEN;
+    keypressed[2] = RIEN; keypressed[3] = RIEN;
+    Game* testgame = new Game(player,false);
+    QVERIFY(false==testgame->suiteGame(keypressed));
+    delete testgame;
+}
 
 
 QTEST_MAIN(TestGame)

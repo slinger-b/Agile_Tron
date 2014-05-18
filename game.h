@@ -5,6 +5,9 @@
 
 const int STARTPOS = 300;
 const int STARTVELOCITY = 3;
+const int BORDERMIN = 0;
+const int BORDERMAX = 600;
+const int MAXPLAYERS = 4;
 
 class Game
 {
