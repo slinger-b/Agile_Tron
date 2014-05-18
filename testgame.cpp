@@ -15,10 +15,13 @@ private slots:
 
     void creation_game();
     void start_position();
+    void pos1D_between_borders();
+    void pos2D_between_borders();
 
 private:
     Game* testgame;
     int player, pos1[2], pos2[2], pos3[2], pos4[2];
+    int a, b, c;
     bool bonus;
 };
 
@@ -48,6 +51,89 @@ void TestGame::start_position()
     QVERIFY(pos4[1]==STARTPOS);
     delete testgame;
 }
+
+// Testing condition
+void TestGame::pos1D_between_borders()
+{
+    Game* testgame = new Game(4,false);
+
+    a = 0; b = a; c = a;
+    QVERIFY(true==testgame->entre(a,b,c));
+    a = 1; b = 2; c = 3;
+    QVERIFY(false==testgame->entre(a,b,c));
+    a = 1; b = 3; c = 2;
+    QVERIFY(false==testgame->entre(a,b,c));
+    a = 2; b = 1; c = 3;
+    QVERIFY(true==testgame->entre(a,b,c));
+    a = 2; b = 3; c = 1;
+    QVERIFY(true==testgame->entre(a,b,c));
+    a = 3; b = 2; c = 1;
+    QVERIFY(false==testgame->entre(a,b,c));
+    a = 3; b = 1; c = 2;
+    QVERIFY(false==testgame->entre(a,b,c));
+    a = 1; b = 2; c = 2;
+    QVERIFY(false==testgame->entre(a,b,c));
+    a = 1; b = 2; c = 1;
+    QVERIFY(true==testgame->entre(a,b,c));
+    a = 1; b = 1; c = 2;
+    QVERIFY(true==testgame->entre(a,b,c));
+
+    delete testgame;
+}
+
+// Testing branching : not all testing because Game::entre already tested
+void TestGame::pos2D_between_borders()
+{
+    Game* testgame = new Game(4,false);
+
+    pos1[0] = 1; pos1[1] = 2; // cur1[0] = cur2[0] -- 3[0] = 4[0]
+    pos2[0] = 0; pos2[1] = 2; // pos1[0] = cur1[0] -- 1[0] = 3[0]
+    pos3[0] = 1; pos3[1] = 0; // pos1[1] = pos2[1] -- 1[1] = 2[1]
+    pos4[0] = 1; pos4[1] = 0; // cur1[1] = cur2[1] < pos1[1]
+    QVERIFY(testgame->verifPartielle(pos1,pos2,pos3,pos4)==false); //OK
+
+    pos1[0] = 0; pos1[1] = 1; // cur1[0] = cur2[0] -- 3[0] = 4[0]
+    pos2[0] = 0; pos2[1] = 0; // pos1[0] = cur1[0] -- 1[0] = 3[0]
+    pos3[0] = 1; pos3[1] = 0; // pos1[1] != pos2[1]
+    pos4[0] = 1; pos4[1] = 0;
+    QVERIFY(testgame->verifPartielle(pos1,pos2,pos3,pos4)==false); //OK
+
+    pos1[0] = 1; pos1[1] = 1; // cur1[0] != cur2[0] -- 3[0] != 4[0]
+    pos2[0] = 0; pos2[1] = 0; // cur1[1] = cur2[1] -- 3[1] = 4[1]
+    pos3[0] = 1; pos3[1] = 1; // pos1[1] = cur1[1] -- 1[1] = 3[1]
+    pos4[0] = 0; pos4[1] = 0; // pos1[0] != pos2[0] -- 1[0] != 2[0]
+    QVERIFY(testgame->verifPartielle(pos1,pos2,pos3,pos4)==false); //OK
+
+    pos1[0] = 2; pos1[1] = 1; // cur1[0] != cur2[0] -- 3[0] != 4[0]
+    pos2[0] = 2; pos2[1] = 0; // cur1[1] = cur2[1] -- 3[1] = 4[1]
+    pos3[0] = 1; pos3[1] = 1; // pos1[1] = cur1[1] -- 1[1] = 3[1]
+    pos4[0] = 0; pos4[1] = 0; // pos1[0] = pos2[0] -- 1[0] = 2[0]
+                              // cur1[0], cur2[0] < pos1[0]
+    QVERIFY(testgame->verifPartielle(pos1,pos2,pos3,pos4)==false); //OK
+
+    pos1[0] = 0; pos1[1] = 0; // cur1[0] != cur2[0] -- 3[0] != 4[0]
+    pos2[0] = 0; pos2[1] = 0; // cur1[1] != cur2[1] -- 3[1] != 4[1]
+    pos3[0] = 1; pos3[1] = 1;
+    pos4[0] = 0; pos4[1] = 0;
+    QVERIFY(testgame->verifPartielle(pos1,pos2,pos3,pos4)==false); //OK
+
+    pos1[0] = 0; pos1[1] = 4; // cur1[0] = cur2[0] -- 3[0] = 4[0]
+    pos2[0] = 0; pos2[1] = 3; // pos1[0] = cur1[0] -- 1[0] = 3[0]
+    pos3[0] = 0; pos3[1] = 1; //
+    pos4[0] = 0; pos4[1] = 0;
+    QVERIFY(testgame->verifPartielle(pos1,pos2,pos3,pos4)==false); //OK
+
+    pos1[0] = 4; pos1[1] = 0; // cur1[0] != cur2[0] -- 3[0] != 4[0]
+    pos2[0] = 3; pos2[1] = 0; // cur1[1] = cur2[1] -- 3[1] = 4[1]
+    pos3[0] = 1; pos3[1] = 0;
+    pos4[0] = 0; pos4[1] = 0;
+    QVERIFY(testgame->verifPartielle(pos1,pos2,pos3,pos4)==false); //OK
+
+    delete testgame;
+}
+
+//verify collision : to do
+
 
 QTEST_MAIN(TestGame)
 #include "testgame.moc"

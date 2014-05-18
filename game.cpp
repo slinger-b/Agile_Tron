@@ -32,24 +32,23 @@ Game::Game(int choixNbrJoueurs, bool bonus)
         motos.push_back(Bike(posDepart[i],vitDepart,dirDepart[i]));
 }
 
-Liste* Game::getMurMoto(int i)const
+// Main function of the class
+// return false if there is one bike left (so the game is finished)
+bool Game::suiteGame(dir keyPress[4])
 {
-    return motos[i].get_liste();
-}
+    bike_turn(keyPress);
+    bike_move();
+    bike_collision();
+    bike_loose();
 
-int Game::getNbrJoueurs()const
-{
-    return nbrJoueurs;
-}
+    int nbrMotosRestantes = bike_surviving();
 
-void Game::bike_turn(dir keyPress[4])
-{
-    for (int i=0; i<nbrJoueurs; ++i)
-        if (keyPress[i]!=RIEN)
-        {
-            motos[i].chgDir(keyPress[i]);
-            keyPress[i]=RIEN;
-        }
+    if (nbrMotosRestantes<2)
+    {
+        reinitialise();
+        return false;
+    }
+    return true;
 }
 
 void Game::bike_collision()
@@ -60,11 +59,100 @@ void Game::bike_collision()
                 motos[i].perduCollision();
 }
 
-void Game::bike_loose()
+bool Game::collision(Bike &motoTest, Bike &motoMur)
 {
-    for (int i = 0; i<nbrJoueurs; ++i)
-        if (motos[i].getPerdu())
-            motos[i].deletewall();
+    // return true when there is a collision
+    bool perdu = false;
+    int pos1 [2],pos2[2]; //positions of the motoTest and the motoMur respectively
+    int cur1[2], cur2[2];
+    int vit = motoTest.get_vitesse();
+
+    Liste* test = motoTest.get_liste();
+    Liste* mur = motoMur.get_liste();
+
+    dir dirTest = (motoTest.get_invers_dir());
+
+    test->premier();
+    test->getElem(pos1);
+
+    mur->premier();
+    mur->getElem(cur1);
+
+    pos2[0]=pos1[0];
+    pos2[1]=pos1[1];
+    ajoute_avance(pos2,dirTest,vit);
+
+    // If the bonus is inactive, the moto loose when touch the wall
+    if (traverseMur == false)
+        if (pos1[0]>600 || pos1[0]<0 || pos1[1]>600 || pos1[1]<0)
+            return true;
+
+    // Otherwise test if motoTest crossed/collided motoMur
+    // Test if the indexes are the same. So we're testing if motoTest collides with itself.
+    // If yes, we have to fetch the second position of the list in order to do the comparison
+    if(mur->getNextElem(cur2) && pos1[0]==cur1[0] && pos1[1]==cur1[1] && motoTest.get_dir() == motoMur.get_dir())
+    {
+        mur->suivant();
+        if (!mur->getNextElem(cur1)) // if the next element of list is null then no collision
+            return false;
+    }
+
+    // Test over all the list if there is a collision
+    // End of the condition when the list of motoMur is empty or there is a collision
+    while(mur->getNextElem(cur2) && !perdu)
+    {
+        perdu = verifPartielle(pos1,pos2,cur1,cur2);
+        cur1[0]=cur2[0];
+        cur1[1]=cur2[1];
+        mur->suivant();
+    }
+    
+    // If the bonus is active, the position of the motoTest has to be changed
+    if (traverseMur == true)
+        motoTest.traverseMur();
+    return perdu;
+}
+
+bool Game::verifPartielle(int pos1[2],int pos2[2],int cur1[2],int cur2[2])
+{
+    if(cur1[0]==cur2[0])
+    {
+        if (pos1[0]==cur1[0])
+        {
+            if(entre(pos1[1],cur1[1],cur2[1])) return true;
+            if(entre(pos2[1],cur1[1],cur2[1])) return true;
+            if(entre(cur1[1],pos1[1],pos2[1])) return true;
+        }
+        else if (pos1[1] == pos2[1])
+            if(entre(cur1[0],pos1[0],pos2[0]) && entre(pos1[1],cur1[1],cur2[1]))return true;
+    }
+    else if (cur1[1] == cur2[1])
+    {
+        if (pos1[1]==cur1[1])
+        {
+            if(entre(pos1[0],cur1[0],cur2[0])) return true;
+            if(entre(pos2[0],cur1[0],cur2[0])) return true;
+            if(entre(cur1[0],pos1[0],pos2[0])) return true;
+        }
+        else if (pos1[0] == pos2[0])
+            if(entre(cur1[1],pos1[1],pos2[1]) && entre(pos1[0],cur1[0],cur2[0])) return true;
+    }
+    return false;
+}
+
+bool Game::entre(int a, int bord1, int bord2)
+{
+    return (a<=bord1&&a>=bord2)||(a<=bord2&&a>=bord1);
+}
+
+void Game::bike_turn(dir keyPress[4])
+{
+    for (int i=0; i<nbrJoueurs; ++i)
+        if (keyPress[i]!=RIEN)
+        {
+            motos[i].chgDir(keyPress[i]);
+            keyPress[i]=RIEN;
+        }
 }
 
 void Game::bike_move()
@@ -82,21 +170,11 @@ int Game::bike_surviving()
     return nbrMotosRestantes;
 }
 
-bool Game::suiteGame(dir keyPress[4])
+void Game::bike_loose()
 {
-    bike_turn(keyPress);
-    bike_move();
-    bike_collision();
-    bike_loose();
-
-    int nbrMotosRestantes = bike_surviving();
-
-    if (nbrMotosRestantes<2)
-    {
-        reinitialise();
-        return false;
-    }
-    return true;
+    for (int i = 0; i<nbrJoueurs; ++i)
+        if (motos[i].getPerdu())
+            motos[i].deletewall();
 }
 
 void Game::reinitialise()
@@ -115,80 +193,13 @@ void Game::reinitialise()
         motos[i].reinitialise();
 }
 
-//verifie quand une moto touche le mur d'une autre moto
-bool Game::collision(Bike &motoTest, Bike &motoMur)
+// ------------- FETCH THE PRIVATE PARAMETERS -------------
+Liste* Game::getMurMoto(int i)const
 {
-    //récupère les deux derniers points du mur pour le test
-    bool perdu=false;
-    Liste* test = motoTest.get_liste();
-    dir dirTest = (motoTest.get_invers_dir());
-    int vit = motoTest.get_vitesse();
-    int pos1 [2],pos2[2];
-    test->premier();
-    test->getElem(pos1);
-    pos2[0]=pos1[0];pos2[1]=pos1[1];
-    ajoute_avance(pos2,dirTest,vit);
-
-    Liste* mur = motoMur.get_liste();
-    int cur1[2], cur2[2];
-    mur->premier();   //se met en début de liste
-    mur->getElem(cur1);
-
-    if (traverseMur == false)
-        if (pos1[0]>600 || pos1[0]<0 || pos1[1]>600 || pos1[1]<0)
-            return true;
-
-    if(mur->getNextElem(cur2) && pos1[0]==cur1[0] && pos1[1]==cur1[1] && motoTest.get_dir() == motoMur.get_dir())
-    {
-        mur->suivant();//si on a la même moto, il ne faut pas tester le premier mur sinon tjs collision !!!
-        if (!mur->getNextElem(cur1))
-            return false;
-    }
-    while(mur->getNextElem(cur2) && !perdu)
-    {
-        perdu = verifPartielle(pos1,pos2,cur1,cur2);
-        cur1[0]=cur2[0];
-        cur1[1]=cur2[1];
-        mur->suivant();
-    }
-
-    if (traverseMur == true)
-        motoTest.traverseMur();
-    return perdu;
+    return motos[i].get_liste();
 }
 
-bool Game::verifPartielle(int pos1[2],int pos2[2],int cur1[2],int cur2[2])
+int Game::getNbrJoueurs()const
 {
-    if(cur1[0]==cur2[0])
-    {
-        if (pos1[0]==cur1[0])
-        {
-            if(entre(pos1[1],cur1[1],cur2[1])) return true;
-            if(entre(pos2[1],cur1[1],cur2[1])) return true;
-            if(entre(cur1[1],pos1[1],pos2[1])) return true;
-
-        }
-        else if (pos1[1] == pos2[1])
-        {
-            if(entre(cur1[0],pos1[0],pos2[0]) && entre(pos1[1],cur1[1],cur2[1]))return true;
-        }
-    }
-    else if (cur1[1] == cur2[1])
-    {
-        if (pos1[1]==cur1[1])
-        {
-            if(entre(pos1[0],cur1[0],cur2[0])) return true;
-            if(entre(pos2[0],cur1[0],cur2[0])) return true;
-            if(entre(cur1[0],pos1[0],pos2[0])) return true;
-
-        }
-        else if (pos1[0] == pos2[0])
-            if(entre(cur1[1],pos1[1],pos2[1]) && entre(pos1[0],cur1[0],cur2[0])) return true;
-    }
-    return false;
-}
-
-bool Game::entre(int a, int bord1, int bord2)
-{
-    return (a<=bord1&&a>=bord2)||(a<=bord2&&a>=bord1);
+    return nbrJoueurs;
 }

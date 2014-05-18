@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'testgame.cpp'
 **
-** Created: Sun 11. May 10:49:44 2014
+** Created: Sat 17. May 11:28:24 2014
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -22,7 +22,7 @@ static const uint qt_meta_data_TestGame[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   12, // methods
+       4,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -30,12 +30,15 @@ static const uint qt_meta_data_TestGame[] = {
  // slots: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x08,
       26,    9,    9,    9, 0x08,
+      43,    9,    9,    9, 0x08,
+      67,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_TestGame[] = {
     "TestGame\0\0creation_game()\0start_position()\0"
+    "pos1D_between_borders()\0pos2D_between_borders()\0"
 };
 
 const QMetaObject TestGame::staticMetaObject = {
@@ -65,9 +68,11 @@ int TestGame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: creation_game(); break;
         case 1: start_position(); break;
+        case 2: pos1D_between_borders(); break;
+        case 3: pos2D_between_borders(); break;
         default: ;
         }
-        _id -= 2;
+        _id -= 4;
     }
     return _id;
 }

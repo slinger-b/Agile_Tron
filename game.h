@@ -26,11 +26,13 @@ public:
     void bike_turn(dir keyPress[4]);
     int bike_surviving();
 
-private:
     //Verification de collision (3 fcts)
     bool collision(Bike &motoTest, Bike &motoMur);
     bool verifPartielle(int pos1[2],int pos2[2],int cur1[2],int cur2[2]);
     bool entre(int a, int bord1, int bord2);
+
+private:
+
 
     int nbrJoueurs;
 
