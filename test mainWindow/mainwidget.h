@@ -34,7 +34,7 @@ public:
     QPixmap touches3;
     QPixmap touches4;
 
-    // QSound* musique;
+    //QSound* musique;
 
     void paintEvent(QPaintEvent * event);
     QPen pen[4];

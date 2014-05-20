@@ -33,7 +33,7 @@ public:
     int getScore()const{return score;}
     bool getPerdu()const{return perdu;}
 
-private:
+//private:
 
     int posDep[2];
     int vitDep;

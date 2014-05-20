@@ -8,7 +8,7 @@ MainWidget::MainWidget(QWidget *parent)
 {
     setFixedSize(iSize_Height,iSize_Width);
     setPalette(QPalette(QColor(128,128,128)));
-    //setAutoFillBackground(true);
+    setAutoFillBackground(true);
 
     fondEcran1 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/Tron.jpg");
     fondEcran2 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/backgrond.jpg");
@@ -22,10 +22,10 @@ MainWidget::MainWidget(QWidget *parent)
     motoH.load("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/hmoto.jpg");
     motoV.load("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/vmoto.jpg");
 
-    // musique = new QSound("./musiqueDeFond.WAV");
+    //musique = new QSound("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/musiqueDeFond.WAV");
 
-    // musique.setLoops(1000);
-    // musique->play();
+    //musique->setLoops(2);
+    //musique->play();
 
     //On doit récupérer le nbr de joueurs
     choixNbrJoueurs = 0;
@@ -103,14 +103,14 @@ void MainWidget::FenetreChoixJoueurs(QPainter &painter)
     painter.setFont(sansFont);
     painter.drawText(33,500, QString ("Nombre voulu de joueurs  : 2 - 3 - 4"));
     painter.setFont(sansFont2);
-    painter.drawText(120,550, QString ("[appuyer sur 2, 3 ou 4 pour choisir]"));
+    painter.drawText(20,550, QString ("[appuyer sur 2, 3 ou 4 pour choisir puis sur tab pour continuer]"));
     if (!bonus)
         painter.drawText(450,30, QString("Bonus W?"));
     else
         painter.drawText(450,30, QString("Bonus activ� !"));
 
-    if (choixNbrJoueurs!=0)
-        numFenetre += 1;
+    //if (choixNbrJoueurs!=0)
+        //numFenetre += 1;
 }
 
 void MainWidget::FentreTouches(QPainter &painter)
@@ -219,8 +219,8 @@ void MainWidget::keyPressEvent(QKeyEvent* event)
 
     case Qt::Key_Tab:
         if (numFenetre == 3)
-            numFenetre-=1;
-        else if (numFenetre == -2 || numFenetre == 0)
+            numFenetre=-1;
+        else //if (numFenetre == -2 || numFenetre == 0)
             numFenetre+=1;
         break;
 

@@ -8,6 +8,7 @@ class TestWidget: public QObject
     Q_OBJECT
 private slots:
     void initialisation();
+    //void end_of_the_game();
  private:
     int choixNbrJoueurs;
     int numFenetre;
@@ -22,7 +23,6 @@ void TestWidget::initialisation()
     numFenetre = -2;
     choixNbrJoueurs=0;
     bonus = false;
-    //startTimer(30);
 
     QCOMPARE( choixNbrJoueurs, m.choixNbrJoueurs );
     QCOMPARE( numFenetre, m.numFenetre );
@@ -39,10 +39,14 @@ void TestWidget::initialisation()
     choixNbrJoueurs=3;
     QTest::keyClick( &m, Qt::Key_3 );
     QCOMPARE( choixNbrJoueurs, m.choixNbrJoueurs );
-
     QCOMPARE( numFenetre, m.numFenetre );
+
     QTest::keyClick( &m, Qt::Key_Tab );
-    //numFenetre+=2;
+    numFenetre+=1;
+    QCOMPARE( numFenetre, m.numFenetre );
+
+    QTest::keyClick( &m, Qt::Key_Tab );
+    numFenetre+=1;
     QCOMPARE( numFenetre, m.numFenetre );
 
 }

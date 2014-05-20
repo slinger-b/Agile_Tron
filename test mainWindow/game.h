@@ -18,7 +18,7 @@ public:
     int getMotoGagnante()const {return motogagnante;}
 
 
-private:
+//private:
     //Verification de collision (3 fcts)
     bool collision(Bike &motoTest, Bike &motoMur);
     bool verifPartielle(int pos1[2],int pos2[2],int cur1[2],int cur2[2]);
