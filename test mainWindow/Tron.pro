@@ -4,9 +4,9 @@
 
 DESTDIR = ../build
 TEMPLATE = app
-TARGET = 
-DEPENDPATH += .
-INCLUDEPATH += .
+#TARGET =
+#DEPENDPATH += .
+#INCLUDEPATH += .
 
 # Input
 HEADERS += mainwidget.h \
@@ -19,6 +19,10 @@ SOURCES += main.cpp mainwidget.cpp \
     node.cpp \
     bike.cpp \
     game.cpp
+
+TARGET = myProject
+#DESTDIR = bin
+TEMPLATE = app
 
 #je rajoute
 #CONFIG +=  console debug

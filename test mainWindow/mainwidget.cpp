@@ -8,19 +8,19 @@ MainWidget::MainWidget(QWidget *parent)
 {
     setFixedSize(iSize_Height,iSize_Width);
     setPalette(QPalette(QColor(128,128,128)));
-    setAutoFillBackground(true);
+    //setAutoFillBackground(true);
 
-    fondEcran1 = QPixmap("./Tron.jpg");
-    fondEcran2 = QPixmap("./piste.jpg");
-    fondEcran3 = QPixmap("motosvolantes.jpg");
-    fondEcran4 = QPixmap("./cadrePapillon.jpg");
+    fondEcran1 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/Tron.jpg");
+    fondEcran2 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/backgrond.jpg");
+    fondEcran3 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/motosvolantes.jpg");
+    fondEcran4 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/cadrePapillon.jpg");
 
-    touches2 = QPixmap("./deuxJoueurs.jpg");
-    touches3 = QPixmap("./troisJoueurs.jpg");
-    touches4 = QPixmap("./quatreJoueurs.jpg");
+    touches2 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/deuxJoueurs.jpg");
+    touches3 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/troisJoueurs.jpg");
+    touches4 = QPixmap("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/quatreJoueurs.jpg");
 
-    motoH.load("./hmoto.jpg");
-    motoV.load("./vmoto.jpg");
+    motoH.load("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/hmoto.jpg");
+    motoV.load("C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/image/vmoto.jpg");
 
     // musique = new QSound("./musiqueDeFond.WAV");
 
@@ -68,7 +68,7 @@ void MainWidget::paintEvent (QPaintEvent * event)
 
     if (numFenetre == -2)
     {
-        painter.drawPixmap(0,0, fondEcran1);
+        painter.drawPixmap(QPoint(0,0),fondEcran1);
         painter.drawText(420,580, QString ("Appuyer sur tab  pour continuer"));
     }
 
@@ -107,7 +107,7 @@ void MainWidget::FenetreChoixJoueurs(QPainter &painter)
     if (!bonus)
         painter.drawText(450,30, QString("Bonus W?"));
     else
-        painter.drawText(450,30, QString("Bonus activÃ© !"));
+        painter.drawText(450,30, QString("Bonus activé !"));
 
     if (choixNbrJoueurs!=0)
         numFenetre += 1;
@@ -116,7 +116,7 @@ void MainWidget::FenetreChoixJoueurs(QPainter &painter)
 void MainWidget::FentreTouches(QPainter &painter)
 {
     if (choixNbrJoueurs == 2)
-        painter.drawPixmap(0,0,touches2);
+        painter.drawPixmap(15,15,touches2);
     else if (choixNbrJoueurs == 3)
         painter.drawPixmap(0,0,touches3);
     else if (choixNbrJoueurs == 4)

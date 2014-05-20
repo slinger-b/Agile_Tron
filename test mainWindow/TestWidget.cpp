@@ -42,7 +42,7 @@ void TestWidget::initialisation()
 
     QCOMPARE( numFenetre, m.numFenetre );
     QTest::keyClick( &m, Qt::Key_Tab );
-    numFenetre+=1;
+    //numFenetre+=2;
     QCOMPARE( numFenetre, m.numFenetre );
 
 }
