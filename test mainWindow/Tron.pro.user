@@ -6,11 +6,11 @@
  </data>
  <data>
   <variable>RunConfiguration0-ProFile</variable>
-  <value type="QString" >test.pro</value>
+  <value type="QString" >Tron.pro</value>
  </data>
  <data>
   <variable>RunConfiguration0-RunConfiguration.name</variable>
-  <value type="QString" >test</value>
+  <value type="QString" >Tron</value>
  </data>
  <data>
   <variable>RunConfiguration0-UseDyldImageSuffix</variable>
@@ -40,16 +40,7 @@
   <variable>buildConfiguration-Debug</variable>
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
-   <value key="QtVersionId" type="int" >0</value>
-   <value key="addQDumper" type="" ></value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildConfiguration-Release</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
-   <value key="QtVersionId" type="int" >0</value>
-   <value key="addQDumper" type="" ></value>
+   <value key="QtVersionId" type="int" >2</value>
   </valuemap>
  </data>
  <data>
@@ -88,7 +79,7 @@
     <value type="QString" >WINDIR=C:\WINDOWS</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
-    <value type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/test.pro</value>
+    <value type="QString" >C:/Documents and Settings/Benji/Mes documents/GitHub/Agile_Tron/test mainWindow/Tron.pro</value>
     <value type="QString" >-spec</value>
     <value type="QString" >win32-g++</value>
     <value type="QString" >-r</value>
@@ -149,29 +140,9 @@
   </valuemap>
  </data>
  <data>
-  <variable>buildconfiguration-Release-buildstep0</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
-   <value key="buildConfiguration" type="int" >0</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildconfiguration-Release-buildstep1</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildconfiguration-Release-cleanstep0</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
-  </valuemap>
- </data>
- <data>
   <variable>buildconfigurations</variable>
   <valuelist type="QVariantList" >
    <value type="QString" >Debug</value>
-   <value type="QString" >Release</value>
   </valuelist>
  </data>
  <data>
