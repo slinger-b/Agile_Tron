@@ -19,9 +19,13 @@ public:
     void chgDir (dir nv_dir);
     void avance();
     void traverseMur();
+    void traverseMur_up(int pos[2]);
+    void traverseMur_down(int pos[2]);
+    void traverseMur_left(int pos[2]);
+    void traverseMur_right(int pos[2]);
 
     void gagne();
-    void perd();
+    void deletewall();
     void perduCollision();
 
     void reinitialise();
